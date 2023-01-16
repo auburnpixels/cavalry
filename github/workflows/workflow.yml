@@ -31,22 +31,22 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Build container image
-        run: docker build -f ./docker/php/Dockerfile --build-arg APP_ENV=production -t registry.digitalocean.com/spin-my-workout/spin-my-workout:$(echo $GITHUB_SHA | head -c7) .
+        run: docker build -f ./docker/php/Dockerfile --build-arg APP_ENV=production -t registry.digitalocean.com/cavalry/cavalry:$(echo $GITHUB_SHA | head -c7) .
 
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 1200
 
       - name: Push image to DigitalOcean Container Registry
-        run: docker push registry.digitalocean.com/spin-my-workout/spin-my-workout:$(echo $GITHUB_SHA | head -c7)
+        run: docker push registry.digitalocean.com/cavalry/cavalry:$(echo $GITHUB_SHA | head -c7)
 
       - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/spin-my-workout/spin-my-workout:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/cavalry/cavalry:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 spin-my-workout
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 cavalry
 
       - name: Deploy to DigitalOcean Kubernetes
         run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
 
       - name: Verify deployment
-        run: kubectl rollout status deployment/spin-my-workout
+        run: kubectl rollout status deployment/cavalry

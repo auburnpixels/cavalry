@@ -4,7 +4,7 @@ services:
 
   # PHP/Nginx.
   app:
-    image: auburnpixels/spin-my-workout
+    image: auburnpixels/cavalry
     networks:
       - app-network
 

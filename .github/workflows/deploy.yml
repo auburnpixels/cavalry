@@ -69,8 +69,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Push to `Spin My Workout`
+      - name: Push to `Cavalry`
         uses: dokku/github-action@master
         with:
-          git_remote_url: 'ssh://dokku@24.199.123.22:22/spin-my-workout'
+          git_remote_url: 'ssh://dokku@164.92.68.249:22/cavalry'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
